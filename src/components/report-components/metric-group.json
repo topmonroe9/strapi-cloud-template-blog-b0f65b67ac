@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_report_components_metric_groups",
+  "info": {
+    "displayName": "metric-group"
+  },
+  "options": {},
+  "attributes": {
+    "section_title": {
+      "type": "string",
+      "required": true
+    },
+    "section_type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "general",
+        "advanced",
+        "comparison",
+        "custom"
+      ]
+    },
+    "metrics": {
+      "type": "component",
+      "component": "report-components.metric-item",
+      "repeatable": true,
+      "required": false
+    }
+  },
+  "config": {}
+}

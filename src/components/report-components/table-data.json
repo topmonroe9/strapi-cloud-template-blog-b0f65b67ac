@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_report_components_table_data",
+  "info": {
+    "displayName": "table-data"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "headers": {
+      "type": "json",
+      "required": true
+    },
+    "rows": {
+      "type": "json",
+      "required": true
+    },
+    "totals": {
+      "type": "json"
+    },
+    "contentWidth": {
+      "type": "enumeration",
+      "default": "w100",
+      "enum": [
+        "w25",
+        "w50",
+        "w75",
+        "w100"
+      ]
+    }
+  },
+  "config": {}
+}

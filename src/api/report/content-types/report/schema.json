@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reports",
+  "info": {
+    "singularName": "report",
+    "pluralName": "reports",
+    "displayName": "Report"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "dateFrom": {
+      "type": "date"
+    },
+    "dateTo": {
+      "type": "date"
+    },
+    "password": {
+      "type": "string"
+    },
+    "content_blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "report-components.metric-group",
+        "report-components.image-section",
+        "report-components.analysis-block",
+        "report-components.text-block",
+        "report-components.chart-block",
+        "report-components.table-data",
+        "report-components.section"
+      ]
+    },
+    "uuid": {
+      "type": "uid"
+    }
+  }
+}
