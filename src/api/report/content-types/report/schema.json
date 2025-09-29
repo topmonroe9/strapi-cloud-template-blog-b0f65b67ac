@@ -15,14 +15,27 @@
       "type": "string",
       "required": true
     },
+    "model": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::model.model",
+      "inversedBy": "reports"
+    },
+    "uuid": {
+      "type": "uid",
+      "required": true
+    },
     "dateFrom": {
-      "type": "date"
+      "type": "date",
+      "required": true
     },
     "dateTo": {
-      "type": "date"
+      "type": "date",
+      "required": true
     },
     "password": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "content_blocks": {
       "type": "dynamiczone",
@@ -35,9 +48,6 @@
         "report-components.table-data",
         "report-components.section"
       ]
-    },
-    "uuid": {
-      "type": "uid"
     }
   }
 }
