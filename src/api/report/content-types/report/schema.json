@@ -7,7 +7,7 @@
     "displayName": "Report"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
