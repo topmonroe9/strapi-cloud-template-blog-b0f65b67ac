@@ -17,8 +17,14 @@
       "unique": true
     },
     "password": {
-      "type": "password",
-      "required": true
+      "type": "string",
+      "required": true,
+      "private": true,
+      "unique": true
+    },
+    "isAdmin": {
+      "type": "boolean",
+      "default": false
     },
     "reports": {
       "type": "relation",

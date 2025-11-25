@@ -7,7 +7,7 @@
     "displayName": "Report"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -22,12 +22,11 @@
       "inversedBy": "reports",
       "required": true
     },
-    "user": {
+    "users": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::user.user",
-      "inversedBy": "reports",
-      "required": true
+      "inversedBy": "reports"
     },
     "uuid": {
       "type": "uid",
