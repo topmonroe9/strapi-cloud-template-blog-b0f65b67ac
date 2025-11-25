@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_report_components_metric_items",
+  "info": {
+    "displayName": "metric-item"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "value_number": {
+      "type": "integer"
+    },
+    "unit": {
+      "type": "string",
+      "required": false
+    },
+    "display_order": {
+      "type": "integer"
+    }
+  },
+  "config": {}
+}

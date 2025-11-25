@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_report_components_image_sections",
+  "info": {
+    "displayName": "image-section"
+  },
+  "options": {},
+  "attributes": {
+    "section_title": {
+      "type": "string",
+      "required": true
+    },
+    "section_type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "capture",
+        "content",
+        "analysis",
+        "gallery"
+      ]
+    },
+    "images": {
+      "type": "component",
+      "component": "report-components.image-item",
+      "repeatable": true
+    },
+    "contentWidth": {
+      "type": "enumeration",
+      "default": "w100",
+      "enum": [
+        "w25",
+        "w50",
+        "w75",
+        "w100"
+      ]
+    }
+  },
+  "config": {}
+}

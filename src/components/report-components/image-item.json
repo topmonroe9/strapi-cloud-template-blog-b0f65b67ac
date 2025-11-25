@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_report_components_image_items",
+  "info": {
+    "displayName": "image-item"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "caption": {
+      "type": "string",
+      "required": false
+    },
+    "alt_text": {
+      "type": "string",
+      "required": false
+    },
+    "display_order": {
+      "type": "integer"
+    },
+    "contentWidth": {
+      "type": "enumeration",
+      "default": "w100",
+      "enum": [
+        "w25",
+        "w50",
+        "w75",
+        "w100"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_report_components_text_blocks",
+  "info": {
+    "displayName": "text-block"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "blocks"
+    },
+    "style": {
+      "type": "enumeration",
+      "enum": [
+        "default",
+        "highlighted",
+        "quote",
+        "warning"
+      ]
+    },
+    "contentWidth": {
+      "type": "enumeration",
+      "default": "w100",
+      "enum": [
+        "w25",
+        "w50",
+        "w75",
+        "w100"
+      ]
+    }
+  },
+  "config": {}
+}

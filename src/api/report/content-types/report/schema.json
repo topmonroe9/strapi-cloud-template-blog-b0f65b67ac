@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reports",
+  "info": {
+    "singularName": "report",
+    "pluralName": "reports",
+    "displayName": "Report"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "model": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::model.model",
+      "inversedBy": "reports",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user.user",
+      "inversedBy": "reports",
+      "required": true
+    },
+    "uuid": {
+      "type": "uid",
+      "required": true
+    },
+    "dateFrom": {
+      "type": "date",
+      "required": true
+    },
+    "dateTo": {
+      "type": "date",
+      "required": true
+    },
+    "content_blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "report-components.metric-group",
+        "report-components.image-section",
+        "report-components.analysis-block",
+        "report-components.text-block",
+        "report-components.chart-block",
+        "report-components.table-data",
+        "report-components.section"
+      ]
+    }
+  }
+}

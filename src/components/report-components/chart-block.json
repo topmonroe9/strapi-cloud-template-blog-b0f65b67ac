@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_report_components_chart_blocks",
+  "info": {
+    "displayName": "chart-block"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "chart_type": {
+      "type": "enumeration",
+      "enum": [
+        "line",
+        "bar",
+        "pie",
+        "doughnut",
+        "radar",
+        "scatter"
+      ]
+    },
+    "data": {
+      "type": "json"
+    },
+    "config": {
+      "type": "json",
+      "required": false
+    },
+    "contentWidth": {
+      "type": "enumeration",
+      "required": false,
+      "default": "w100",
+      "enum": [
+        "w25",
+        "w50",
+        "w75",
+        "w100"
+      ]
+    }
+  },
+  "config": {}
+}
