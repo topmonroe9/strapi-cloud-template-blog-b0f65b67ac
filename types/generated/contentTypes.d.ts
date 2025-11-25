@@ -445,7 +445,7 @@ export interface ApiReportReport extends Struct.CollectionTypeSchema {
     singularName: 'report';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
     content_blocks: Schema.Attribute.DynamicZone<
