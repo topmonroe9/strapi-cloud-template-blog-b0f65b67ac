@@ -1,0 +1,49 @@
+'use strict';
+
+module.exports = {
+  async getAllReports(ctx) {
+    try {
+      // Fetch all reports (both published and drafts) by querying the database directly
+      // In Strapi 5, we need to get all versions including drafts and published
+      const draftReports = await strapi.db.query('api::report.report').findMany({
+        where: {
+          publishedAt: null,
+        },
+        populate: {
+          model: {
+            select: ['id', 'documentId', 'name']
+          },
+          accounts: {
+            select: ['id', 'documentId', 'name']
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+
+      const publishedReports = await strapi.db.query('api::report.report').findMany({
+        where: {
+          publishedAt: {
+            $ne: null,
+          },
+        },
+        populate: {
+          model: {
+            select: ['id', 'documentId', 'name']
+          },
+          accounts: {
+            select: ['id', 'documentId', 'name']
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+
+      // Combine both arrays
+      const allReports = [...publishedReports, ...draftReports];
+
+      return allReports;
+    } catch (error) {
+      console.error('Error fetching all reports:', error);
+      return ctx.internalServerError('Failed to fetch reports');
+    }
+  },
+};
