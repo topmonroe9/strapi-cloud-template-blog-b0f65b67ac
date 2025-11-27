@@ -1,7 +1,5 @@
 'use strict';
 
-const bcryptjs = require('bcryptjs');
-
 module.exports = {
   async authenticate(ctx) {
     const { password } = ctx.request.body;
@@ -11,19 +9,20 @@ module.exports = {
     }
 
     try {
-      // Try to authenticate with users first
-      const users = await strapi.entityService.findMany('api::user.user', {
-        fields: ['id', 'documentId', 'name', 'password', 'isAdmin'],
+      // Try to authenticate with accounts first
+      const accounts = await strapi.entityService.findMany('api::account.account', {
+        fields: ['id', 'documentId', 'name', 'role', 'password', 'isAdmin'],
       });
 
-      for (const user of users) {
-        const userPassword = user.password;
-        if (userPassword && password === userPassword) {
+      for (const account of accounts) {
+        const accountPassword = account.password;
+        if (accountPassword && password === accountPassword) {
           return {
-            id: user.documentId || user.id,
-            name: user.name,
+            id: account.documentId || account.id,
+            name: account.name,
+            role: account.role,
             type: 'user',
-            isAdmin: user.isAdmin || false,
+            isAdmin: account.isAdmin || false,
           };
         }
       }

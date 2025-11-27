@@ -4,8 +4,8 @@ module.exports = {
   routes: [
     {
       method: 'POST',
-      path: '/users/authenticate',
-      handler: 'user.authenticate',
+      path: '/accounts/authenticate',
+      handler: 'account.authenticate',
       config: {
         auth: false,
       }

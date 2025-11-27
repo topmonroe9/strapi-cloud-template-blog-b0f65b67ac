@@ -9,7 +9,14 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": true
+    }
+  },
   "attributes": {
     "title": {
       "type": "string",
@@ -19,14 +26,13 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::model.model",
-      "inversedBy": "reports",
-      "required": true
+      "inversedBy": "reports"
     },
-    "users": {
+    "accounts": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::user.user",
-      "inversedBy": "reports"
+      "target": "api::account.account",
+      "mappedBy": "reports"
     },
     "uuid": {
       "type": "uid",

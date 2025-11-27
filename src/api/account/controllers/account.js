@@ -1,13 +1,13 @@
 'use strict';
 
 /**
- * user controller
+ * account controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 const bcryptjs = require('bcryptjs');
 
-module.exports = createCoreController('api::user.user', ({ strapi }) => ({
+module.exports = createCoreController('api::account.account', ({ strapi }) => ({
   async find(ctx) {
     // Call the default find method
     return await super.find(ctx);
@@ -22,22 +22,23 @@ module.exports = createCoreController('api::user.user', ({ strapi }) => ({
     }
 
     try {
-      // Fetch all users
-      const users = await strapi.entityService.findMany('api::user.user', {
-        fields: ['id', 'documentId', 'name', 'password'],
+      // Fetch all accounts
+      const accounts = await strapi.entityService.findMany('api::account.account', {
+        fields: ['id', 'documentId', 'name', 'password', 'isAdmin'],
       });
 
-      // Try to find a matching user
-      for (const user of users) {
-        const userPassword = user.password;
+      // Try to find a matching account
+      for (const account of accounts) {
+        const accountPassword = account.password;
 
         // Compare plaintext password with hashed password
-        if (userPassword && await bcryptjs.compare(password, userPassword)) {
+        if (accountPassword && await bcryptjs.compare(password, accountPassword)) {
           ctx.status = 200;
           return {
-            id: user.documentId || user.id,
-            name: user.name,
+            id: account.documentId || account.id,
+            name: account.name,
             type: 'user',
+            isAdmin: account.isAdmin || false,
           };
         }
       }
