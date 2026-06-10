@@ -1,6 +1,9 @@
 'use strict';
 
 const ANALYTICS_API_URL = process.env.ANALYTICS_API_URL || 'http://91.184.253.146:3010';
+// models-revenue-api now requires a shared internal key — set ANALYTICS_INTERNAL_KEY
+// in the Strapi Cloud env (same value as CRM_INTERNAL_KEY on the other services).
+const ANALYTICS_HEADERS = { 'X-Internal-Key': process.env.ANALYTICS_INTERNAL_KEY || '' };
 
 module.exports = {
   // Get revenue by model name directly
@@ -16,7 +19,7 @@ module.exports = {
       if (month !== undefined) params.append('month', month);
       if (year !== undefined) params.append('year', year);
 
-      const response = await fetch(`${ANALYTICS_API_URL}/api/revenue/model?${params}`);
+      const response = await fetch(`${ANALYTICS_API_URL}/api/revenue/model?${params}`, { headers: ANALYTICS_HEADERS });
 
       if (!response.ok) {
         strapi.log.error(`[Revenue Proxy] Analytics API error: ${response.status}`);
@@ -94,7 +97,7 @@ module.exports = {
       });
 
       strapi.log.info(`[Revenue Proxy] Calling analytics API: ${ANALYTICS_API_URL}/api/revenue/model?${params}`);
-      const response = await fetch(`${ANALYTICS_API_URL}/api/revenue/model?${params}`);
+      const response = await fetch(`${ANALYTICS_API_URL}/api/revenue/model?${params}`, { headers: ANALYTICS_HEADERS });
 
       if (!response.ok) {
         strapi.log.error(`[Revenue Proxy] Analytics API error: ${response.status}`);
