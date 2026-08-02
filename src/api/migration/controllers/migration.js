@@ -13,11 +13,11 @@ const authed = (ctx) => {
   return k && k === KEY();
 };
 
+const LIMIT = 100000;
 const REPORT_POPULATE = {
   content_blocks: {
     populate: {
       images: { populate: { image: true } },
-      metrics: true,
     },
   },
   model: true,
@@ -61,26 +61,41 @@ module.exports = {
 
   async export(ctx) {
     if (!authed(ctx)) return ctx.unauthorized();
-    const reports = await strapi.db.query('api::report.report').findMany({
-      populate: REPORT_POPULATE,
-      limit: -1,
-    });
-    const models = await strapi.db.query('api::model.model').findMany({ limit: -1 });
-    const accounts = await strapi.db.query('api::account.account').findMany({
-      populate: { reports: { select: ['documentId', 'uuid'] } },
-      limit: -1,
-    });
-    const versions = await strapi.db.query('api::report-version.report-version').findMany({ limit: -1 });
-    const files = await strapi.db.query('plugin::upload.file').findMany({ limit: -1 });
-    ctx.body = {
-      exportedAt: new Date().toISOString(),
-      strapiVersion: strapi.config.info?.strapi,
-      counts: {
-        reports: reports.length, models: models.length, accounts: accounts.length,
-        versions: versions.length, files: files.length,
-      },
-      reports, models, accounts, versions, files,
-    };
+    const only = ctx.query.only ? String(ctx.query.only).split(',') : null;
+    const want = (name) => !only || only.includes(name);
+    const offset = parseInt(ctx.query.offset || '0', 10);
+    const limit = ctx.query.limit ? parseInt(ctx.query.limit, 10) : LIMIT;
+    let stage = 'init';
+    try {
+      const out = { exportedAt: new Date().toISOString(), strapiVersion: strapi.config.info?.strapi };
+      if (want('reports')) {
+        stage = 'reports';
+        out.reports = await strapi.db.query('api::report.report').findMany({ populate: REPORT_POPULATE, limit, offset });
+      }
+      if (want('models')) {
+        stage = 'models';
+        out.models = await strapi.db.query('api::model.model').findMany({ limit: LIMIT });
+      }
+      if (want('accounts')) {
+        stage = 'accounts';
+        out.accounts = await strapi.db.query('api::account.account').findMany({
+          populate: { reports: { select: ['documentId', 'uuid'] } }, limit: LIMIT,
+        });
+      }
+      if (want('versions')) {
+        stage = 'versions';
+        out.versions = await strapi.db.query('api::report-version.report-version').findMany({ limit, offset });
+      }
+      if (want('files')) {
+        stage = 'files';
+        out.files = await strapi.db.query('plugin::upload.file').findMany({ limit: LIMIT });
+      }
+      ctx.body = out;
+    } catch (e) {
+      strapi.log.error(`[migration.export] failed at ${stage}: ${e.message}`);
+      ctx.status = 500;
+      ctx.body = { error: e.message, stage, stack: (e.stack || '').split('\n').slice(0, 4) };
+    }
   },
 
   async import(ctx) {
