@@ -1,0 +1,9 @@
+node_modules
+.git
+.cache
+.strapi
+dist
+build
+.tmp/data.db
+.tmp/data.db.backup
+npm-debug.log

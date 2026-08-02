@@ -1,0 +1,20 @@
+services:
+  reports-strapi:
+    build: .
+    image: reports-strapi:latest
+    container_name: reports-strapi
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - edge
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=edge"
+      - "traefik.http.routers.reportsapi.entrypoints=websecure"
+      - "traefik.http.routers.reportsapi.rule=Host(`api-reports.apree-tech.com`)"
+      - "traefik.http.routers.reportsapi.tls.certresolver=le"
+      - "traefik.http.services.reportsapi.loadbalancer.server.port=1337"
+
+networks:
+  edge:
+    external: true
