@@ -18,6 +18,28 @@ const REPORT_POPULATE = {
   accounts: true,
 };
 
+// Prepare a content_blocks array (as returned by getOne, possibly edited on the
+// client) for a Document Service write: drop component ids so they're recreated,
+// and convert populated media objects to their file id.
+const toFileId = (v) => (v && typeof v === 'object' ? (v.id ?? null) : (v ?? null));
+const sanitizeBlocks = (blocks) => (Array.isArray(blocks) ? blocks : []).map((b) => {
+  const out = {};
+  for (const [k, v] of Object.entries(b)) {
+    if (k === 'id') continue;
+    if (k === 'images' && Array.isArray(v)) {
+      out.images = v.map((it) => {
+        const { id, image, ...rest } = it;
+        return { ...rest, image: toFileId(image) };
+      });
+    } else if (k === 'metrics' && Array.isArray(v)) {
+      out.metrics = v.map(({ id, ...rest }) => rest);
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+});
+
 module.exports = {
   // GET /api/editor/reports — list for the cabinet index
   async list(ctx) {
@@ -74,7 +96,7 @@ module.exports = {
     const documentId = existing.documentId;
 
     const data = {};
-    if (body.content_blocks !== undefined) data.content_blocks = body.content_blocks;
+    if (body.content_blocks !== undefined) data.content_blocks = sanitizeBlocks(body.content_blocks);
     if (body.title !== undefined) data.title = body.title;
     if (body.dateFrom !== undefined) data.dateFrom = body.dateFrom;
     if (body.dateTo !== undefined) data.dateTo = body.dateTo;
