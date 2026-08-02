@@ -114,6 +114,7 @@ module.exports = {
           'api::report.report',
           'api::account.account',
           'api::model.model',
+          'plugin::upload.file',
         ]) {
           await strapi.db.query(uid).deleteMany({ where: {} });
         }
