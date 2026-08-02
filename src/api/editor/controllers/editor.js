@@ -84,6 +84,20 @@ module.exports = {
     ctx.body = { data: report };
   },
 
+  // POST /api/editor/upload — upload image(s), return [{id,url,name}]
+  async upload(ctx) {
+    if (!authed(ctx)) return ctx.unauthorized();
+    const files = ctx.request.files && (ctx.request.files.files || ctx.request.files['files']);
+    if (!files) return ctx.badRequest('no files');
+    try {
+      const uploaded = await strapi.plugin('upload').service('upload').upload({ data: {}, files });
+      ctx.body = (Array.isArray(uploaded) ? uploaded : [uploaded]).map((f) => ({ id: f.id, url: f.url, name: f.name }));
+    } catch (e) {
+      strapi.log.error(`[editor.upload] ${e.message}`);
+      ctx.status = 500; ctx.body = { error: e.message };
+    }
+  },
+
   // PUT /api/editor/report/:uuid — save content_blocks (+ optional meta), snapshot a version
   async save(ctx) {
     if (!authed(ctx)) return ctx.unauthorized();
