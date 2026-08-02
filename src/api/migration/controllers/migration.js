@@ -155,9 +155,15 @@ module.exports = {
         } catch (e) { log.errors.push(`account ${a.name}: ${e.message}`); }
       }
 
-      // 4) reports (content_blocks + relations by documentId), keep uuid + documentId + publishedAt
-      const reportIdByDoc = {};
+      // 4) reports — dedupe by documentId (draft+published rows), prefer published.
+      //    Use entityService.create (accepts model:id, media image:id inside components).
+      const byDoc = new Map();
       for (const r of reports) {
+        const ex = byDoc.get(r.documentId);
+        if (!ex || (r.publishedAt && !ex.publishedAt)) byDoc.set(r.documentId, r);
+      }
+      log.docIdPreserved = null;
+      for (const r of byDoc.values()) {
         try {
           const {
             id, createdBy, updatedBy, localizations,
@@ -165,13 +171,13 @@ module.exports = {
           } = r;
           const blocks = (content_blocks || []).map((b) => cleanComponent(b, fileMap));
           const data = {
-            ...scalar,
+            ...scalar, // includes documentId, uuid, dateFrom, dateTo, publishedAt, telegram_notified
             content_blocks: blocks,
             model: model ? modelByDoc[model.documentId] ?? null : null,
             accounts: (accs || []).map((a) => accountByDoc[a.documentId]).filter(Boolean),
           };
-          const created = await strapi.db.query('api::report.report').create({ data });
-          reportIdByDoc[r.documentId] = created.id;
+          const created = await strapi.entityService.create('api::report.report', { data });
+          if (log.docIdPreserved === null) log.docIdPreserved = created.documentId === r.documentId;
           log.reports++;
         } catch (e) { log.errors.push(`report ${r.uuid}: ${e.message}`); }
       }
